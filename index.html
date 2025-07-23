@@ -2,13 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#000000" />
   <title>Out2Stay Housing Directory</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <header>
+    <h1>Out2Stay Housing Directory</h1>
+    <p>Connecting veterans and those on parole with stable rental housing options to help rebuild lives and communities.</p>
+  </header>
+
+  <main>
+    <section class="cta">
+      <a href="#form" class="button">List Your Housing</a>
+    </section>
+
+    <section id="form">
+      <iframe
+        id="JotFormIFrame-251986777848079"
+        title="Out2Stay Housing Form"
+        allow="geolocation; microphone; camera; fullscreen; payment"
+        src="https://form.jotform.com/251986777848079"
+        frameborder="0"
+        style="min-width: 100%; height: 900px; border: none;"
+        scrolling="no">
+      </iframe>
+      <script src='https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js'></script>
+      <script>
+        window.jotformEmbedHandler("iframe[id='JotFormIFrame-251986777848079']", "https://form.jotform.com/");
+      </script>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Out2Stay. All rights reserved.</p>
+  </footer>
 </body>
 </html>
