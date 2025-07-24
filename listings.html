@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Social Sharing Preview -->
+<meta property="og:title" content="Out2Stay | Housing for Veterans, Seniors & Parolees" />
+<meta property="og:description" content="Join the mission to connect underserved populations with stable, safe housing. Your listing helps rebuild lives." />
+<meta property="og:image" content="https://raw.githubusercontent.com/Lisadedrick/out2stay-site/refs/heads/main/Out2Stay%20Logo.png" />
+<meta property="og:url" content="https://out2stay.com" />
+<meta name="twitter:card" content="summary_large_image" />
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Listings | Out2Stay</title>
+  <style>
+    body { font-family: sans-serif; background: #f2f2f2; margin: 0; padding: 20px; }
+    h1 { text-align: center; }
+    .listing { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .listing img { width: 100%; max-width: 400px; border-radius: 8px; }
+    .listing h2 { margin-top: 0; }
+    #debug { display: none; }
+  </style>
+</head>
+<body>
+ <img src="https://raw.githubusercontent.com/Lisadedrick/out2stay-site/refs/heads/main/Out2Stay%20Logo.png" alt="Out2Stay Logo" style="max-width: 200px; display: block; margin: 0 auto; margin-top: 20px;">
+
+  <h1>Available Housing Listings</h1>
+  <div id="listings"></div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const SUPABASE_URL = 'https://flmonmmnbdnqejpmeesl.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZsbW9ubW1uYmRucWVqcG1lZXNsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMyOTk1MzcsImV4cCI6MjA2ODg3NTUzN30.BLVs4L_TbabeJYAuWV3nkaa-uBLyinxy8_RbjxboAFA';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const listingsContainer = document.getElementById('listings');
+    const debugContainer = document.getElementById('debug');
+
+    async function loadListings() {
+      const { data, error } = await supabase.from('listings').select('*');
+
+      // Show raw output for debugging
+      debugContainer.innerText = `DEBUG:\nListings Length: ${data?.length || 0}\n\nData: ${JSON.stringify(data, null, 2)}\n\nError: ${error ? JSON.stringify(error, null, 2) : 'None'}`;
+
+      if (error) {
+        listingsContainer.innerHTML = '<p>Error loading listings. Check console.</p>';
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        listingsContainer.innerHTML = '<p>No listings found.</p>';
+        return;
+      }
+
+      data.forEach(listing => {
+        const div = document.createElement('div');
+        div.className = 'listing';
+        div.innerHTML = `
+          <h2>${listing.title}</h2>
+          <p><strong>Location:</strong> ${listing.city}, ${listing.state}</p>
+          <p>${listing.description}</p>
+          <p><strong>Contact:</strong> <a href="mailto:${listing.contact_email}">${listing.contact_email}</a></p>
+          ${listing.image_url ? `<img src="${listing.image_url}" alt="Listing image">` : ''}
+        `;
+        listingsContainer.appendChild(div);
+      });
+    }
+
+    loadListings();
+  </script>
+</body>
+</html>
